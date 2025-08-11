@@ -1,6 +1,6 @@
 import os
 import json
-from fastapi import FastAPI, Form, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import Response
 from dotenv import load_dotenv
 from loguru import logger
@@ -44,6 +44,17 @@ async def incoming_call():
     logger.info(f"TwiML size (bytes): {get_byte_length(final_twiml)}")
 
     return Response(content=final_twiml, media_type="text/xml")
+
+
+@app.post("/call-status")
+async def call_status(request: Request):
+    form_data = await request.form()
+    call_sid = form_data.get("CallSid")
+    call_status = form_data.get("CallStatus")
+
+    logger.info(f"Call Status - SID: {call_sid}, Status: {call_status}")
+
+    return Response(status_code=200)
 
 
 @app.websocket("/relay")
