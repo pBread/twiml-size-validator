@@ -1,5 +1,3 @@
-"""Main application for TwiML payload size testing."""
-
 from generator import generate_payload, get_byte_length
 
 
