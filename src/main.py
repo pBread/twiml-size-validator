@@ -14,6 +14,7 @@ app = FastAPI()
 HOSTNAME = os.getenv("HOSTNAME")
 PORT = int(os.getenv("PORT", 3333))
 TWIML_SIZE = 60 * 1024  # 60KB
+COMPRESSIBILITY = "lipsum"  # determines the compressibility of the custom payload. Options: random | maximally | lipsum
 
 
 @app.post("/incoming-call")
@@ -38,7 +39,7 @@ async def incoming_call():
     twiml_size = get_byte_length(twiml)
     payload_size = TWIML_SIZE - 500 - twiml_size
 
-    target = generate_payload(payload_size, "lipsum")
+    target = generate_payload(payload_size, COMPRESSIBILITY)
     final_twiml = twiml.replace("__XXX__", target)
 
     logger.info(f"TwiML size (bytes): {get_byte_length(final_twiml)}")
