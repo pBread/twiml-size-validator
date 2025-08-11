@@ -86,7 +86,7 @@ COMPRESSIBILITY = "lipsum"  # . Options: random | maximally | lipsum
 
 ### Testing Your Own Payload
 
-Update the file (src/custom.txt)[src/custom.txt] with your own payload. Then, uncomment the code in the `/incoming-call` webhook.
+Update the file [src/custom.txt](src/custom.txt) with your own payload. Then, uncomment the code in the `/incoming-call` webhook.
 
 ```python
     # uncomment to use the custom.txt file as the payload
