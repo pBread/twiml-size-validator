@@ -1,12 +1,10 @@
+from typing import Literal
 import random
 import string
-from typing import Literal
 
 from faker import Faker
 
 fake = Faker()
-
-CompressibilityType = Literal["random", "maximally", "lipsum"]
 
 
 def escape_xml(text: str) -> str:
@@ -24,7 +22,7 @@ def get_byte_length(text: str) -> int:
     return len(text.encode("utf-8"))
 
 
-def generate_payload(bytes_target: int, compressibility: CompressibilityType) -> str:
+def generate_payload(bytes_target: int, compressibility: str) -> str:
     """Generate a payload of the specified byte length and compressibility type.
 
     Args:
