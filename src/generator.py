@@ -57,8 +57,13 @@ def _make_incompressible(bytes_target: int) -> str:
     Returns:
         Random string from 64-character alphabet
     """
+    alphabet = string.ascii_letters + string.digits + "-_"
 
-    return ""
+    result = ""
+    for _ in range(bytes_target):
+        result += random.choice(alphabet)
+
+    return result
 
 
 def _make_maximally(bytes_target: int) -> str:
