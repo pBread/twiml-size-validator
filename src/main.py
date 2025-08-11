@@ -7,7 +7,7 @@ def main():
 
     # Test different payload types
     test_configs = [
-        ("incompressible", 1000),
+        ("random", 1000),
         ("maximally", 1000),
         ("lipsum", 1000),
     ]

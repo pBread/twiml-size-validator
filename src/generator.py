@@ -6,7 +6,7 @@ from faker import Faker
 
 fake = Faker()
 
-CompressibilityType = Literal["incompressible", "maximally", "lipsum"]
+CompressibilityType = Literal["random", "maximally", "lipsum"]
 
 
 def escape_xml(text: str) -> str:
@@ -38,8 +38,8 @@ def generate_payload(bytes_target: int, compressibility: CompressibilityType) ->
         ValueError: If compressibility type is invalid
     """
     match compressibility:
-        case "incompressible":
-            return _make_incompressible(bytes_target)
+        case "random":
+            return _make_random(bytes_target)
         case "maximally":
             return _make_maximally(bytes_target)
         case "lipsum":
@@ -48,8 +48,8 @@ def generate_payload(bytes_target: int, compressibility: CompressibilityType) ->
             raise ValueError(f"Invalid compressibility type: {compressibility}")
 
 
-def _make_incompressible(bytes_target: int) -> str:
-    """Generate incompressible random data.
+def _make_random(bytes_target: int) -> str:
+    """Generate random random data.
 
     Args:
         bytes_target: Target size in bytes
