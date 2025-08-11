@@ -1,0 +1,14 @@
+[project]
+name = "conversation-relay-tester"
+version = "1.0.0"
+description = "TwiML payload size testing framework"
+authors = [{ name = "https://github.com/pBread" }]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "faker>=24.0.0",
+    "flask>=3.0.0",
+    "flask-socketio>=5.3.0",
+    "python-dotenv>=1.0.0",
+    "requests>=2.31.0",
+]
