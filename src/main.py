@@ -5,7 +5,7 @@ from fastapi.responses import Response
 from dotenv import load_dotenv
 from loguru import logger
 
-from generator import generate_payload, get_byte_length
+from generator import generate_payload, get_byte_length, escape_xml
 
 load_dotenv()
 
@@ -14,6 +14,7 @@ app = FastAPI()
 HOSTNAME = os.getenv("HOSTNAME")
 PORT = int(os.getenv("PORT", 3333))
 
+# only relevant for generator
 TWIML_SIZE = 60 * 1024  # 60KB
 COMPRESSIBILITY = "lipsum"  # determines the compressibility of the custom payload. Options: random | maximally | lipsum
 
@@ -22,7 +23,7 @@ COMPRESSIBILITY = "lipsum"  # determines the compressibility of the custom paylo
 async def incoming_call():
     logger.info("Webhook: /incoming-call")
 
-    greeting = "Say something."
+    greeting = "Call connected."
 
     twiml = f"""<Response>
   <Connect>
@@ -36,13 +37,18 @@ async def incoming_call():
     </ConversationRelay>
   </Connect>
 </Response>"""
+    # # generate a random payload
+    # twiml_size = get_byte_length(twiml)
+    # payload_size = TWIML_SIZE - 500 - twiml_size
+    # target = generate_payload(payload_size, COMPRESSIBILITY)
 
-    twiml_size = get_byte_length(twiml)
-    payload_size = TWIML_SIZE - 500 - twiml_size
+    # use the custom.txt file as the payload
+    with open("src/custom.txt", "r", encoding="utf-8") as f:
+        target = f.read().strip()
+        target = escape_xml(target)
+        logger.info("Loaded content from custom.txt")
 
-    target = generate_payload(payload_size, COMPRESSIBILITY)
     final_twiml = twiml.replace("__XXX__", target)
-
     logger.info(f"TwiML size (bytes): {get_byte_length(final_twiml)}")
 
     return Response(content=final_twiml, media_type="text/xml")
@@ -50,12 +56,6 @@ async def incoming_call():
 
 @app.post("/call-status")
 async def call_status(request: Request):
-    form_data = await request.form()
-    call_sid = form_data.get("CallSid")
-    call_status = form_data.get("CallStatus")
-
-    logger.info(f"Call Status - SID: {call_sid}, Status: {call_status}")
-
     return Response(status_code=200)
 
 
