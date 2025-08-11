@@ -23,7 +23,7 @@ COMPRESSIBILITY = "lipsum"  # determines the compressibility of the custom paylo
 async def incoming_call():
     logger.info("Webhook: /incoming-call")
 
-    greeting = "Call connected."
+    greeting = "Hello, your call has been connected."
 
     twiml = f"""<Response>
   <Connect>
@@ -37,16 +37,16 @@ async def incoming_call():
     </ConversationRelay>
   </Connect>
 </Response>"""
-    # # generate a random payload
-    # twiml_size = get_byte_length(twiml)
-    # payload_size = TWIML_SIZE - 500 - twiml_size
-    # target = generate_payload(payload_size, COMPRESSIBILITY)
+    # generate a random payload
+    twiml_size = get_byte_length(twiml)
+    payload_size = TWIML_SIZE - 500 - twiml_size
+    target = generate_payload(payload_size, COMPRESSIBILITY)
 
-    # use the custom.txt file as the payload
-    with open("src/custom.txt", "r", encoding="utf-8") as f:
-        target = f.read().strip()
-        target = escape_xml(target)
-        logger.info("Loaded content from custom.txt")
+    # # uncomment to use the custom.txt file as the payload
+    # with open("src/custom.txt", "r", encoding="utf-8") as f:
+    #     target = f.read().strip()
+    #     target = escape_xml(target)
+    #     logger.info("Loaded content from custom.txt")
 
     final_twiml = twiml.replace("__XXX__", target)
     logger.info(f"TwiML size (bytes): {get_byte_length(final_twiml)}")
